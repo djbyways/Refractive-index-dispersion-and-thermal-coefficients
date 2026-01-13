@@ -1,6 +1,8 @@
 function [ m ] = Calculate_m(Temperature, lambda, substance)
 % contributors over the years:
-% Daniel Jakubczyk, Anastasiya Derkachova, Tho Do Duc, Gennadiy Derkachov, Kwasi Nyandey, Sima Alikhanzadeh-Arani 
+% Daniel Jakubczyk, Anastasiya Derkachova, Tho Do Duc, Gennadiy Derkachov, Kwasi Nyandey, Sima Alikhanzadeh-Arani
+% Institute of Physics, Polish Academy of Sciences
+% https://www.ifpan.edu.pl
 
 % substance:
 % pentaethylene glycol - PEG,
@@ -15,7 +17,7 @@ function [ m ] = Calculate_m(Temperature, lambda, substance)
 % Glycerol,
 % fused silica - fSiO2,
 % BK7 glass (Schott N-BK 7) - BK7,
-% EG-Rhodamine 6G mixture (dye laser solution ~10^(?3) molar) -  EG+6G,
+% EG-Rhodamine 6G mixture (dye laser solution ~10^(-3) molar) -  EG+6G,
 % DMSO,
 % Benzonitryl,
 % MetOH,
@@ -166,7 +168,7 @@ case 'Glycerol'
 case 'fSiO2'
     % fused silica
     % three term temperature-dependent effective Sellmeier model from
-    % Leviton et al.
+    % Leviton et al., DOI:10.1117/12.672853
     TKelvin = Temperature+273.15;
     lambda = lambda/1000;
 
@@ -192,7 +194,8 @@ case 'BK7' % Schott N-BK 7
     
     m = sqrt((B1*lambda^2)/(lambda^2-C1)+(B2*lambda^2)/(lambda^2-C2)+(B3*lambda^2)/(lambda^2-C3)+1);
    
-case 'EG+6G' % dye laser solution ~10^(?3) molar
+case 'EG+6G' % dye laser solution ~10^(-3) molar
+        % added by Tho Do Duc
         % Sellmeier dispersion parameters for EG from Jakubczyk et al., as above
         % temperature dependence of solution EG+6G from Yaltkaya, Aydin, Turk J Phys 26 (2002), 41-47
         % parameter 'A' manipulated to fit Yaltkaya results, so the result is rather approximate
@@ -214,7 +217,7 @@ case 'EG+6G' % dye laser solution ~10^(?3) molar
 %     m = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
 
 case 'DMSO'
-        % our fit to:
+        % our Sellmeier formula fit to:
         % Landolt-Börnstein III/47: Optical Constants
         % & Strecker, W., Spitaler, R.: Chem.Ber. 59 (1926) 1754
         x=lambda/1e3;
@@ -226,7 +229,7 @@ case 'DMSO'
         
         m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV));
     
-    
+%   forgotten where from:
 %     A0 = 1.4585;
 %     % Cauchy dispersion parameters:
 %     A1 = 8584;
@@ -234,7 +237,7 @@ case 'DMSO'
 %     m = -0.00044*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
 
 case 'Benzonitryl' %C6H5CN
-    % our fit to Landolt-Börnstein III/47: Optical Constants
+    % our Sellmeier formula fit to Landolt-Börnstein III/47: Optical Constants
     A0 = 1.51158;
     % Cauchy dispersion parameters:
     A1 = 2600;
@@ -242,7 +245,7 @@ case 'Benzonitryl' %C6H5CN
     m =-4.20518e-4*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;   
     
 case 'MetOH' % added by Tho Do Duc
-        % Cauchy dispersion parameters from Kozmaet al. Vol. 22, No. 7/July 2005/ J. Opt. Soc. Am. B
+        % Cauchy dispersion parameters from Kozma et al. Vol. 22, No. 7/July 2005/ J. Opt. Soc. Am. B
         % temperature coefficient from Moutzouris et al., DOI 10.1007/s00340-013-5744-3 
         A0=1.3195;
         A1=3053.64419;
@@ -260,7 +263,7 @@ case 'Canola'
 
 case 'uPS'
     % PS microspheres @24 deg. C
-    % Cauchy dispersion parameters from Ma et al.:
+    % Cauchy dispersion parameters from Ma et al., DOI 10.1088/0031-9155/48/24/013
     A0 = 1.5725;
     A1 = 3108;
     A2 = 347790000;
@@ -315,6 +318,7 @@ case 'H2O'
     m = sqrt((2*F+1)/(1-F));
     
     case 'Au'
+        % Kolwas K., Derkachova A. DOI: https://doi.org/10.3390/nano10071411
             c = 299792458;
             h = 6.6260755e-34;
             e = 1.60217733e-19;
@@ -340,6 +344,7 @@ case 'H2O'
             m = sqrt(eps);
  
     case 'Ag'
+        % Kolwas K., Derkachova A. DOI: https://doi.org/10.3390/nano10071411
         
         c = 299792458;
         h = 6.6260755e-34;
