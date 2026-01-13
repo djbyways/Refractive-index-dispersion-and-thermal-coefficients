@@ -14,8 +14,8 @@ function [ m ] = Calculate_m(Temperature, lambda, substance)
 % propylene glycol - PG,
 % Glycerol,
 % fused silica - fSiO2,
-% BK7 glass,
-% EG-Rhodamine 6G mixture -  EG+6G,
+% BK7 glass (Schott N-BK 7) - BK7,
+% EG-Rhodamine 6G mixture (dye laser solution ~10^(?3) molar) -  EG+6G,
 % DMSO,
 % Benzonitryl,
 % MetOH,
@@ -180,8 +180,8 @@ case 'fSiO2'
     
     m = (1 + (S1*lambda^2)/(lambda^2 - lambda1^2) + (S2*lambda^2)/(lambda^2 - lambda2^2) + (S3*lambda^2)/(lambda^2 - lambda3^2))^0.5;
 
-case 'BK7'
-    % dispersion parameters
+case 'BK7' % Schott N-BK 7
+    % dispersion parameters from schott-optical-glass-collection-datasheets-july-2015-us
     B1=1.03961212;
     B2=0.231792344;
     B3=1.01046945;
@@ -192,10 +192,12 @@ case 'BK7'
     
     m = sqrt((B1*lambda^2)/(lambda^2-C1)+(B2*lambda^2)/(lambda^2-C2)+(B3*lambda^2)/(lambda^2-C3)+1);
    
-case 'EG+6G'
-        % Sellmeier dispersion parameters EG+temperature dependence of solution EG+6G:      
+case 'EG+6G' % dye laser solution ~10^(?3) molar
+        % Sellmeier dispersion parameters for EG from Jakubczyk et al., as above
+        % temperature dependence of solution EG+6G from Yaltkaya, Aydin, Turk J Phys 26 (2002), 41-47
+        % parameter 'A' manipulated to fit Yaltkaya results, so the result is rather approximate
         x=lambda/1e3;
-        A=1.34238;
+        A=1.345;
         B_IR=0.0137;
         C_IR=3.12;
         B_UV=0.68263;
@@ -232,6 +234,7 @@ case 'DMSO'
 %     m = -0.00044*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
 
 case 'Benzonitryl' %C6H5CN
+    % our fit to Landolt-Börnstein III/47: Optical Constants
     A0 = 1.51158;
     % Cauchy dispersion parameters:
     A1 = 2600;
@@ -239,7 +242,8 @@ case 'Benzonitryl' %C6H5CN
     m =-4.20518e-4*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;   
     
 case 'MetOH' % added by Tho Do Duc
-        % Cauchy dispersion parameters:
+        % Cauchy dispersion parameters from Kozmaet al. Vol. 22, No. 7/July 2005/ J. Opt. Soc. Am. B
+        % temperature coefficient from Moutzouris et al., DOI 10.1007/s00340-013-5744-3 
         A0=1.3195;
         A1=3053.64419;
         A2=-34163639.3011;
@@ -247,8 +251,8 @@ case 'MetOH' % added by Tho Do Duc
         m=-0.00040*(Temperature-T_ref)+A0+A1/(lambda^2)+A2/(lambda^4)+A3/(lambda^6);    
 
 case 'Canola'
-    % Rapeseed oil @22+/-6.5 deg.C
-    % Cauchy dispersion parameters:
+    % Rapeseed oil @22+/-6.5 deg.C reportedly, but temperature accuracy was +/-2 K in the invoked work
+    % Cauchy dispersion parameters from Glasse et al 2014 Meas. Sci. Technol. 25 035205, doi:10.1088/0957-0233/25/3/035205
     A0=1.439298;
     A1=9339.331;
     A2=566636000;
