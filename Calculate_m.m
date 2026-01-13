@@ -1,7 +1,30 @@
 function [ m ] = Calculate_m(Temperature, lambda, substance)
+% contributors over the years:
+% Daniel Jakubczyk, Anastasiya Derkachova, Tho Do Duc, Gennadiy Derkachov, Kwasi Nyandey, Sima Alikhanzadeh-Arani 
 
-% EG, DEG, TEG, TetEG, DMI, DMSO, Benzonitryl, uPS, fSiO2, BK7, H2O, MetOH, EG+6G,
-% Au, Ag (for bulk)
+% substance:
+% pentaethylene glycol - PEG,
+% hexaethylene glycol - HEG,
+% dipropylene glycol (mixture of isomers) - DPG,
+% tripropylene glycol - TPG,
+% ethylene glycol - EG,
+% diethylene glycol - DEG,
+% triethylene glycol - TEG,
+% tetraethylene glycol - TetEG,
+% propylene glycol - PG,
+% Glycerol,
+% fused silica - fSiO2,
+% BK7 glass,
+% EG-Rhodamine 6G mixture -  EG+6G,
+% DMSO,
+% Benzonitryl,
+% MetOH,
+% Canola oil,
+% polystyrene microspheres - uPS,
+% H2O,
+% titania nanoparticles - nanoTiO2,
+% Au (in bulk),
+% Ag (in bulk)
 
 % lambda in nm
 % Temperature in deg Celsius
@@ -10,7 +33,8 @@ T_ref = 22;
 
 switch substance
     
-case 'PEG'    
+case 'PEG'   
+    % Derkachova et al., https://doi.org/10.1016/j.optmat.2026.117874
     x=lambda/1e3;
     A=1.59771;
     B_IR=0.00957;
@@ -23,7 +47,8 @@ case 'PEG'
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
 
 case 'HEG'
-    x=lambda/1e3;
+   % Derkachova et al., https://doi.org/10.1016/j.optmat.2026.117874
+   x=lambda/1e3;
    A=1.64934; 
    B_IR=0.00528;
    C_IR=3.00459;
@@ -35,6 +60,7 @@ case 'HEG'
    m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
 
 case 'DPG'
+    % Derkachova et al., https://doi.org/10.1016/j.optmat.2026.117874
     x=lambda/1e3;
     A=1.64629;
     B_IR=0.02138;
@@ -47,6 +73,7 @@ case 'DPG'
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
 
  case 'TPG'
+    % Derkachova et al., https://doi.org/10.1016/j.optmat.2026.117874
     x=lambda/1e3;
     A=1.60003; 
     B_IR=0.00401;
@@ -59,6 +86,7 @@ case 'DPG'
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
     
 case 'EG' 
+    % Jakubczyk et al., https://doi.org/10.1038/s41597-023-02819-3, https://doi.org/10.1038/s41597-024-03547-y
     x=lambda/1e3;
     A=1.34238;
     B_IR=0.0137;
@@ -71,6 +99,7 @@ case 'EG'
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
     
 case 'DEG'
+    % Jakubczyk et al., https://doi.org/10.1038/s41597-023-02819-3, https://doi.org/10.1038/s41597-024-03547-y
     x=lambda/1e3;
     A=1.60169;
     B_IR=0.02833;
@@ -83,6 +112,7 @@ case 'DEG'
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
 
 case 'TEG'
+    % Jakubczyk et al., https://doi.org/10.1038/s41597-023-02819-3, https://doi.org/10.1038/s41597-024-03547-y
     x=lambda/1e3;
     A=1.12259;
     B_IR=0.00475;
@@ -95,6 +125,7 @@ case 'TEG'
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
 
 case 'TetEG'
+    % Jakubczyk et al., https://doi.org/10.1038/s41597-023-02819-3, https://doi.org/10.1038/s41597-024-03547-y
     x=lambda/1e3;
     A=1.48424;
     B_IR=0.00354;
@@ -107,6 +138,7 @@ case 'TetEG'
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
 
 case 'PG'
+    % Jakubczyk et al., https://doi.org/10.1038/s41597-023-02819-3, https://doi.org/10.1038/s41597-024-03547-y
     x=lambda/1e3;
     A=1.15131;
     B_IR=0.00824;
@@ -118,7 +150,8 @@ case 'PG'
     C_T = -0.72; 
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
       
-case 'Glycerol'    
+case 'Glycerol'
+    % Jakubczyk et al., https://doi.org/10.1038/s41597-023-02819-3, https://doi.org/10.1038/s41597-024-03547-y
     x=lambda/1e3;
     A=1.6062;
     B_IR=0.06222;
@@ -131,8 +164,9 @@ case 'Glycerol'
     m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) +(Temperature-T_ref)*(A_T+B_T/(x+C_T));
     
 case 'fSiO2'
-    %three term temperature-dependent effective Sellmeier model from
-    %Leviton et al.
+    % fused silica
+    % three term temperature-dependent effective Sellmeier model from
+    % Leviton et al.
     TKelvin = Temperature+273.15;
     lambda = lambda/1000;
 
@@ -170,7 +204,7 @@ case 'EG+6G'
         
         m=sqrt(A+B_IR*x^2/(x^2-C_IR)+B_UV*x^2/(x^2-C_UV)) - DeltaT*(Temperature-T_ref);              
     
-% case 'DMI'
+% case 'DMI' % very approximate
 %     A0 = 1.4664;
 %     % Cauchy dispersion parameters:
 %     A1 = 1984.54821;
@@ -178,6 +212,9 @@ case 'EG+6G'
 %     m = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
 
 case 'DMSO'
+        % our fit to:
+        % Landolt-Börnstein III/47: Optical Constants
+        % & Strecker, W., Spitaler, R.: Chem.Ber. 59 (1926) 1754
         x=lambda/1e3;
         A=1;
         B_IR=0.04419;
@@ -201,8 +238,7 @@ case 'Benzonitryl' %C6H5CN
     A2 = 1.0919e9;
     m =-4.20518e-4*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;   
     
-% added by Tho Do Duc
-    case 'MetOH'
+case 'MetOH' % added by Tho Do Duc
         % Cauchy dispersion parameters:
         A0=1.3195;
         A1=3053.64419;
@@ -226,8 +262,19 @@ case 'uPS'
     A2 = 347790000;
     m = A0+A1/lambda^2+A2/lambda^4;
     
+case 'nanoTiO2'
+    % probably amorphous
+    % 24 deg. C, 35 nm diameter nanoparticles dispersed in water
+    % M. N. Polyanskiy. Refractiveindex.info database of optical constants.
+    % Sci. Data 11, 94 (2024) https://doi.org/10.1038/s41597-023-02898-2
+    x=lambda/1e3;
+    A = 1;
+    B_IR = 4.6796;
+    C_IR = 0.0401;
+    m=sqrt(A+B_IR*x^2/(x^2-C_IR));
+    
 case 'H2O'
-    % dispersion parameters for water:
+    % dispersion parameters for water from Harvey at al. , DOI: 10.1063/1.556029:
     a0 = 0.244257733;
     a1 = 9.74634476e-3;
     a2 = -3.73234996e-3;
@@ -242,8 +289,7 @@ case 'H2O'
     
     T_K = 273.15 + Temperature;
     
-    % if concerns density of water
-    if ((0<=Temperature)&&(Temperature<=40))
+        if ((0<=Temperature)&&(Temperature<=40)) % this "if" concerns density of water
         % Thiesen formula for 0 - 40 degC from Tanaka
         b1 = -3.983035;
         b2 = 301.797;
